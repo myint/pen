@@ -1912,7 +1912,10 @@ static void write_cfg(char *p)
 	struct tm *nowtm;
 	char nowstr[80];
 	FILE *fp = fopen(p, "w");
-	if (!fp) debug("Can't open file '%s'", p);
+	if (!fp) {
+		debug("Can't open file '%s'", p);
+		return;
+	}
 	now = time(NULL);
 	nowtm = localtime(&now);
 	strftime(nowstr, sizeof(nowstr), "%Y-%m-%d %H:%M:%S", nowtm);
