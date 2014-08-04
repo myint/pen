@@ -1,0 +1,13 @@
+language: c
+
+compiler:
+    - clang
+    - gcc
+
+install:
+    - ./bootstrap
+    - ./configure
+    - make
+
+script:
+    - ./pen
