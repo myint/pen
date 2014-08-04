@@ -1,4 +1,7 @@
+*.o
 .*.swp
+/.deps/
+/Makefile
 /Makefile.in
 /aclocal.m4
 /compile
@@ -6,4 +9,10 @@
 /configure
 /depcomp
 /install-sh
+/mergelogs
 /missing
+/pen
+/penctl
+/penlog
+/penlogd
+/stamp-h1
