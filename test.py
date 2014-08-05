@@ -40,9 +40,11 @@ def pen(arguments):
     process = subprocess.Popen([PEN_PATH] + arguments)
 
     time.sleep(2)
-    yield process
 
-    process.kill()
+    try:
+        yield process
+    finally:
+        process.kill()
 
 
 if __name__ == '__main__':
