@@ -24,6 +24,7 @@ class Test(unittest.TestCase):
                                      'http://127.0.0.1:8888'],
                                     stdout=subprocess.PIPE)
             self.assertIn('GNU', curl.communicate()[0].decode('utf-8'))
+            self.assertEqual(0, curl.returncode)
 
     def test_handle_unwritable_file_gracefully(self):
         self.assertEqual(
