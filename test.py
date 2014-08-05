@@ -21,6 +21,15 @@ class Test(unittest.TestCase):
                                     stdout=subprocess.PIPE)
             self.assertIn('GNU', curl.communicate()[0].decode('utf-8'))
 
+    def test_handle_unwritable_file_gracefully(self):
+        self.assertEqual(
+            1,
+            subprocess.call(['./pen', '-f',
+                             '-F', '/',
+                             '-o', 'write', '/',
+                             '8888', 'savannah.nongnu.org:80'],
+                            stderr=subprocess.PIPE))
+
 
 @contextlib.contextmanager
 def pen(arguments):
