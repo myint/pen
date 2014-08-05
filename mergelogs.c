@@ -28,7 +28,6 @@
 #include <unistd.h>
 #include <time.h>
 
-#define KEEP_MAX 100	/* how much to keep from the URI */
 
 typedef struct {
 	char *a;	/* server name */
