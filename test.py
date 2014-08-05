@@ -6,9 +6,13 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import contextlib
+import os
 import subprocess
 import time
 import unittest
+
+
+PEN_PATH = os.path.join(os.path.dirname(__file__), 'pen')
 
 
 class Test(unittest.TestCase):
@@ -24,7 +28,7 @@ class Test(unittest.TestCase):
     def test_handle_unwritable_file_gracefully(self):
         self.assertEqual(
             1,
-            subprocess.call(['./pen', '-f',
+            subprocess.call([PEN_PATH, '-f',
                              '-F', '/',
                              '-o', 'write', '/',
                              '8888', 'savannah.nongnu.org:80'],
@@ -33,7 +37,7 @@ class Test(unittest.TestCase):
 
 @contextlib.contextmanager
 def pen(arguments):
-    process = subprocess.Popen(['./pen'] + arguments)
+    process = subprocess.Popen([PEN_PATH] + arguments)
 
     time.sleep(2)
     yield process
