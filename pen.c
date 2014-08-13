@@ -3512,6 +3512,10 @@ int main(int argc, char **argv)
 
 	listenport = argv[0];
 	listenfd = open_listener(listenport);
+	if (listenfd < 0)
+	{
+		return 1;
+	}
 	init_mask();
 	init(argc, argv);
 
