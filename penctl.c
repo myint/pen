@@ -59,7 +59,7 @@ static void error(char *fmt, ...)
 
 static void alarm_handler(int dummy)
 {
-	;
+	(void)dummy;
 }
 
 static void usage(void)

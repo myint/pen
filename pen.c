@@ -758,6 +758,9 @@ static void del_acl(int a)
 
 static int match_acl_unix(int a, struct sockaddr_un *cli_addr)
 {
+	(void)a;
+	(void)cli_addr;
+
 	if (debuglevel) debug("Unix acl:s not implemented");
 	return 1;
 }
@@ -1087,6 +1090,8 @@ static void textstats(void)
 
 static void stats(int dummy)
 {
+	(void)dummy;
+
 	if (debuglevel) debug("Caught USR1, will save stats");
 	do_stats=1;
 	sigaction(SIGUSR1, &usr1action, NULL);
@@ -1094,6 +1099,8 @@ static void stats(int dummy)
 
 static void restart_log(int dummy)
 {
+	(void)dummy;
+
 	if (debuglevel) debug("Caught HUP, will read cfg");
 	do_restart_log=1;
 	sigaction(SIGHUP, &hupaction, NULL);
@@ -1101,6 +1108,8 @@ static void restart_log(int dummy)
 
 static void quit(int dummy)
 {
+	(void)dummy;
+
 	if (debuglevel) {
 		debug("Quitting");
 		debug("Read configuration %d times", hupcounter);

@@ -100,12 +100,16 @@ static void error(char *fmt, ...)
 
 static void restart_log(int dummy)
 {
+	(void)dummy;
+
 	do_restart_log = 1;
 	sigaction(SIGHUP, &hupaction, NULL);
 }
 
 static void quit(int dummy)
 {
+	(void)dummy;
+
 	loopflag = 0;
 }
 
