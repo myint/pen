@@ -1200,7 +1200,7 @@ static int store_client(int clino, struct sockaddr_storage *cli, int ch)
 				oldest = i;
 			}
 		}
-	
+
 		if (i == clients_max) {
 			if (empty != -1) i = empty;
 			else i = oldest;
@@ -1719,7 +1719,7 @@ static void background(void)
 		if (childpid > 0) {
 			exit(0);	/* parent */
 		}
-	}	
+	}
 	int devnull_fd = open("/dev/null", O_RDWR);
 	dup2(devnull_fd,0); /* stdin */
 	dup2(devnull_fd,1); /* stdout */
@@ -2497,7 +2497,7 @@ static void add_client(int downfd, struct sockaddr_storage *cli_addr)
 	}
 	/* if we get here, we're dead */
 	if (emerg_server != -1) {
-		if (!emergency) 
+		if (!emergency)
 			debug("Using emergency server");
 		emergency=1;
 		if ((upfd = try_server(emerg_server, 0, cli_addr)) != -1) goto Success2;
@@ -2640,7 +2640,7 @@ static int flush_down(int i)
 	if (debuglevel > 1) debug("flush_down(%d) %d bytes", i, n);
 	if (n > 0) {
 		conns[i].downn -= n;
-		if (conns[i].downn == 0) 
+		if (conns[i].downn == 0)
 			free(conns[i].downb);
 		else
 			conns[i].downbptr += n;
@@ -2739,7 +2739,7 @@ static void mainloop_select(void)
 			if (logfp) {
 				fclose(logfp);
 				logfp = fopen(logfile, "a");
-				if (!logfp) 
+				if (!logfp)
 					error("Can't open logfile %s", logfile);
 			}
 			read_cfg(cfgfile);
@@ -2982,7 +2982,7 @@ static void mainloop_poll(void)
 			if (logfp) {
 				fclose(logfp);
 				logfp = fopen(logfile, "a");
-				if (!logfp) 
+				if (!logfp)
 					error("Can't open logfile %s", logfile);
 			}
 			read_cfg(cfgfile);
@@ -3163,7 +3163,7 @@ static void mainloop_kqueue(void)
 			if (logfp) {
 				fclose(logfp);
 				logfp = fopen(logfile, "a");
-				if (!logfp) 
+				if (!logfp)
 					error("Can't open logfile %s", logfile);
 			}
 			read_cfg(cfgfile);
@@ -3482,11 +3482,11 @@ int main(int argc, char **argv)
 		usage();
 	}
 
-	if ((connections_max*2+10) > FD_SETSIZE && !use_poll) 
+	if ((connections_max*2+10) > FD_SETSIZE && !use_poll)
 		error("Number of simultaneous connections to large.\n"
 		      "Maximum is %d, or re-build pen with larger FD_SETSIZE",
 		      (FD_SETSIZE-10)/2);
-	
+
 	getrlimit(RLIMIT_CORE, &r);
 	r.rlim_cur = r.rlim_max;
 	setrlimit(RLIMIT_CORE, &r);

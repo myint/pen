@@ -66,5 +66,4 @@ Other Unixes should work as well, possibly requiring trivial changes.
 Success stories or problem reports are welcome.
 
 If pen is started with the -w option, statistics are saved in html
-format when a USR1 signal is received. The cgi script penstats can
-be used to simplify this; it must be edited to reflect local conditions.
+format when a USR1 signal is received.

@@ -254,12 +254,12 @@
 030820	#include <string.h> in penlog.c.
 
 030820	Patch for penlogd.c by Branson Matheson <branson@windborne.net>:
-	  - pen sends two lines for every log.. penlogd only needs one 
-	        to function. 
-	  - added a -b ... unbuffer to the opts for penlogd so that you 
+	  - pen sends two lines for every log.. penlogd only needs one
+	        to function.
+	  - added a -b ... unbuffer to the opts for penlogd so that you
 	        can actually see the lines as they come out.
 	  - changed one of the dubugs to so post processing of the input
-	        data. 
+	        data.
 
 030407	Bugs uncovered by Charlie Reitsma <reitsmac@denison.edu>:
 	HOWTO incorrectly specified penctl in place of penlog
@@ -379,7 +379,7 @@
 	Set current in store_conn.
 	Released 0.5.0.
 
-010914	Statistics in HTML format (Riccard Åkerman).
+010914	Statistics in HTML format (Riccard Ã…kerman).
 	Tested pen on HP-UX 10.20.
 
 010913	Released 0.4.0.
@@ -447,4 +447,3 @@
 001218	Updated the README.
 
 001022	Rewrote the load balancing algorithm.
-
