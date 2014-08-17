@@ -1,6 +1,12 @@
 pen
 ===
 
+Unofficial fork of the pen TCP/UDP load balancer (and reverse proxy) tool.
+
+.. image:: https://travis-ci.org/myint/pen.svg?branch=master
+    :target: https://travis-ci.org/myint/pen
+    :alt: Build status
+
 
 Installation
 ============
