@@ -7,7 +7,7 @@ penctl_SOURCES = penctl.c
 penlog_SOURCES = penlog.c
 penlogd_SOURCES = penlogd.c
 
-doc_DATA = HOWTO AUTHORS README ChangeLog COPYING
+doc_DATA = HOWTO AUTHORS ChangeLog COPYING
 
 man_MANS = pen.1 mergelogs.1 penctl.1 penlog.1 penlogd.1
 
