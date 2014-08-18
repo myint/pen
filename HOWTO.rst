@@ -1,29 +1,31 @@
 HTTP
 ----
 
-pen -l pen.log -p pen.pid lbhost:80 host1:80 host2:80
+::
+
+    $ pen -l pen.log -p pen.pid lbhost:80 host1:80 host2:80
 
 If pen is running on one of the web servers, it might seem like
 a good idea to simply use an alternative port for the web server
 process, reusing the IP address. Unfortunately, that doesn't work
-very well. Look at this (simplified) example:
+very well. Look at this (simplified) example::
 
-sh-2.05# pen lbhost:80 lbhost:8080
-sh-2.05# telnet lbhost 80
-Trying 127.0.0.1...
-Connected to lbhost.
-Escape character is '^]'.
-GET /bb
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-<HTML><HEAD>
-<TITLE>301 Moved Permanently</TITLE>
-</HEAD><BODY>
-<H1>Moved Permanently</H1>
-The document has moved <A HREF="http://lbhost:8080/bb/">here</A>.<P>
-<HR>
-<ADDRESS>Apache/1.3.14 Server at lbhost Port 8080</ADDRESS>
-</BODY></HTML>
-Connection closed by foreign host.
+    sh-2.05# pen lbhost:80 lbhost:8080
+    sh-2.05# telnet lbhost 80
+    Trying 127.0.0.1...
+    Connected to lbhost.
+    Escape character is '^]'.
+    GET /bb
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <HTML><HEAD>
+    <TITLE>301 Moved Permanently</TITLE>
+    </HEAD><BODY>
+    <H1>Moved Permanently</H1>
+    The document has moved <A HREF="http://lbhost:8080/bb/">here</A>.<P>
+    <HR>
+    <ADDRESS>Apache/1.3.14 Server at lbhost Port 8080</ADDRESS>
+    </BODY></HTML>
+    Connection closed by foreign host.
 
 This will cause the client to attempt to contact the web server
 directly, which may not be possible depending on firewall configuration
@@ -32,9 +34,9 @@ attempts from pen.
 
 
 The solution is to bind two addresses to the server running pen, and
-use one address for pen and the other for the web server. Like this:
+use one address for pen and the other for the web server. Like this::
 
-pen address1:80 address2:80 server2:80
+    $ pen address1:80 address2:80 server2:80
 
 Here, address1 and address2 refer to the same server, while server2
 refers to another server.
@@ -45,29 +47,29 @@ logs into a single file which can be used to calculate statistics.
 Penlog runs on each of the web servers. It reads log entries from
 stdin and sends them over the network to the host running penlogd.
 For Apache, this is accomplished by adding a line similar to this
-to httpd.conf:
+to httpd.conf::
 
-CustomLog "|/usr/local/bin/penlog loghost 10000" common
+    CustomLog "|/usr/local/bin/penlog loghost 10000" common
 
 For other web servers, the procedure is different. If the server
-cannot write its logs to a pipe, this kludge may actually work:
+cannot write its logs to a pipe, this kludge may actually work::
 
-tail -f /path/to/logfile | penlogd loghost 10000
+    $ tail -f /path/to/logfile | penlogd loghost 10000
 
 The command line to pen must also be altered to indicate that the
 logs should go to the penlogd server rather than a file. This is
-accomplished using the
+accomplished using the::
 
--l loghost:10000
+    -l loghost:10000
 
 option.
 
 The log file pen.log is used to combine the web server logs into a
-single file which can be used to calculate statistics. Example:
+single file which can be used to calculate statistics. Example::
 
-mergelogs -p pen.log \
-	10.0.0.1:access_log.host1 10.0.0.2:access_log.host2 \
-	> access_log
+    $ mergelogs -p pen.log \
+        10.0.0.1:access_log.host1 10.0.0.2:access_log.host2 \
+        > access_log
 
 The program mergelogs is distributed with pen. Use matching versions
 of pen and mergelogs to ensure that the log file format is compatible.
@@ -83,9 +85,9 @@ the clients. This harms performance since the lookups are slow.
 
 A better solution is to use a separate program to process the log
 file. One such program is webresolve, which is usually run from the
-splitwr script to perform many lookups in parallel. Example:
+splitwr script to perform many lookups in parallel. Example::
 
-splitwr access_log > access_log.resolved
+    $ splitwr access_log > access_log.resolved
 
 Webresolve is available from http://siag.nu/webresolve/.
 
@@ -93,20 +95,26 @@ Webresolve is available from http://siag.nu/webresolve/.
 HTTPS
 -----
 
-pen -l pen.log -p pen.pid lbhost:443 host1:443 host2:443
+::
+
+    $ pen -l pen.log -p pen.pid lbhost:443 host1:443 host2:443
 
 Otherwise identical to http (for our purposes), https uses port 443.
 
 Using pen for the ssl encapsulation:
 
-pen -l pen.log -p pen.pid -E mycert.pem lbhost:443 host1:80 host2:80
+::
+
+    $ pen -l pen.log -p pen.pid -E mycert.pem lbhost:443 host1:80 host2:80
 
 
 HTTP + HTTPS
 ------------
 
-pen -l pen80.log -p pen80.pid -h lbhost:80 host1:80 host2:80
-pen -l pen443.log -p pen443.pid -h lbhost:443 host1:443 host2:443
+::
+
+    $ pen -l pen80.log -p pen80.pid -h lbhost:80 host1:80 host2:80
+    $ pen -l pen443.log -p pen443.pid -h lbhost:443 host1:443 host2:443
 
 If we are using http and https in parallel for a single site and
 need to make sure that requests go to the same server for both protocols,
@@ -128,7 +136,9 @@ For example, serve static content such as images over http.
 SMTP
 ----
 
-pen -l pen.log -p pen.pid -r lbhost:25 host1:25 host2:25
+::
+
+    $ pen -l pen.log -p pen.pid -r lbhost:25 host1:25 host2:25
 
 This is straightforward enough, with the added twist that all
 connections to host1 and host2 appear to come from lbhost. It is
@@ -142,26 +152,28 @@ a high volume of outgoing mail.
 FTP
 ---
 
-pen -l pen.log -p pen.pid lbhost:21 host1:21 host2:21
+::
+
+    $ pen -l pen.log -p pen.pid lbhost:21 host1:21 host2:21
 
 The ftp protocol has quirks that makes load balancing more difficult
 than many other protocols. Details in RFC959, but here is an example
-from a pen debug session:
+from a pen debug session::
 
-copy_up(0)
-23: PORT 127,0,0,1,12,212
+    copy_up(0)
+    23: PORT 127,0,0,1,12,212
 
-copy_down(0)
-30: 200 PORT command successful.
+    copy_down(0)
+    30: 200 PORT command successful.
 
-copy_up(0)
-18: RETR loadlin.exe
+    copy_up(0)
+    18: RETR loadlin.exe
 
-copy_down(0)
-72: 150 Opening BINARY mode data connection for loadlin.exe (32177 bytes).
+    copy_down(0)
+    72: 150 Opening BINARY mode data connection for loadlin.exe (32177 bytes).
 
-copy_down(0)
-24: 226 Transfer complete.
+    copy_down(0)
+    24: 226 Transfer complete.
 
 Notice how the last two entries claim that the transfer is first
 "opening", and then "complete" with no intermediary step.
@@ -196,14 +208,16 @@ First a snippet from /etc/hosts. The IP addresses are supposed to be
 public addresses. It is possible to play tricks with NAT to remove
 that requirement, but that is beyond the scope of this document.
 
-123.123.123.1	lbhost
-123.123.123.2	host1
-123.123.123.3	host2
+::
+
+    123.123.123.1	lbhost
+    123.123.123.2	host1
+    123.123.123.3	host2
 
 ftp servers are running on host1 and host2. Use this command to
-start pen on lbhost:
+start pen on lbhost::
 
-pen -l pen.log -p pen.pid lbhost:21 host1:21 host2:21
+    $ pen -l pen.log -p pen.pid lbhost:21 host1:21 host2:21
 
 Incoming connections from clients are distributed to host1 and host2,
 transparently to the user. Outgoing connections from host1 and host2
@@ -230,18 +244,18 @@ POP3
 The pop3 service normally runs from inetd. In that case, it is not
 possible to use multiple IP addresses to allow pen and the pop3
 server to run on the same host. However, there's nothing to stop us
-from using multiple ports. Add this to /etc/services:
+from using multiple ports. Add this to /etc/services::
 
-pop3-pen	1110/tcp
+    pop3-pen	1110/tcp
 
-And change /etc/inetd.conf like this:
+And change /etc/inetd.conf like this::
 
-# pop3		stream	tcp	nowait	root	/usr/sbin/tcpd	in.pop3d
-pop3-pen	stream	tcp	nowait	root	/usr/sbin/tcpd	in.pop3d
+    # pop3		stream	tcp	nowait	root	/usr/sbin/tcpd	in.pop3d
+    pop3-pen	stream	tcp	nowait	root	/usr/sbin/tcpd	in.pop3d
 
-Note how the old entry for pop3 is commented out. Restart inetd and run
+Note how the old entry for pop3 is commented out. Restart inetd and run::
 
-pen -p pen.pid pop3 localhost:1110 otherhost:pop3
+    $ pen -p pen.pid pop3 localhost:1110 otherhost:pop3
 
 Pen will listen to the pop3 port and distribute incoming requests
 to the local pop3 server running on port 1110 and to the pop3 server
@@ -259,54 +273,54 @@ The following experiment on my laptop was successful:
 
 1. Install OpenLDAP
 
-2. Run slapd like this:
+2. Run slapd like this::
 
-        /usr/local/libexec/slapd -d 255
+    $ /usr/local/libexec/slapd -d 255
 
-3. Run pen like this:
+3. Run pen like this::
 
-        pen -d -d -f 3890 localhost:389
+    $ pen -d -d -f 3890 localhost:389
 
-4. Run ldapsearch like this:
+4. Run ldapsearch like this::
 
-        ldapsearch -H ldap://localhost:3890 \
+    $ ldapsearch -H ldap://localhost:3890 \
         -x -b '' -s base '(objectclass=*)' namingContexts
 
 
-Slapd and pen spewed lots of debugging info and ldapsearch returned:
+Slapd and pen spewed lots of debugging info and ldapsearch returned::
 
-8<---
-#
-# filter: (objectclass=*)
-# requesting: namingContexts
-#
+    8<---
+    #
+    # filter: (objectclass=*)
+    # requesting: namingContexts
+    #
 
-#
-dn:
-namingContexts: o=Qbranch,c=SE
+    #
+    dn:
+    namingContexts: o=Qbranch,c=SE
 
-# search result
-search: 2
-result: 0 Success
+    # search result
+    search: 2
+    result: 0 Success
 
-# numResponses: 2
-# numEntries: 1
-8<---
+    # numResponses: 2
+    # numEntries: 1
+    8<---
 
 which was what I expected.
 
-Inspired by this success, I repeated the test:
+Inspired by this success, I repeated the test::
 
-8<---
-/usr/local/libexec/slapd -d 255 -h ldap://localhost:389/
+    8<---
+    /usr/local/libexec/slapd -d 255 -h ldap://localhost:389/
 
-/usr/local/libexec/slapd -d 255 -h ldap://localhost:390/
+    /usr/local/libexec/slapd -d 255 -h ldap://localhost:390/
 
-pen -d -d -f 3890 localhost:389 localhost:390
+    pen -d -d -f 3890 localhost:389 localhost:390
 
-ldapsearch -H ldap://localhost:3890 \
-        -x -b '' -s base '(objectclass=*)' namingContexts
-8<---
+    ldapsearch -H ldap://localhost:3890 \
+            -x -b '' -s base '(objectclass=*)' namingContexts
+    8<---
 
 Got a reply. Repeated a few times, then pressed Ctrl-C on the slapd that
 was serving the replies. Did another ldapsearch and got a reply from the
@@ -327,10 +341,10 @@ two servers (obviously), pen and Jerome Etienne's vrrpd for Linux.
 Install pen and vrrpd on both servers. Start pen on both servers,
 using all the same parameters and listening on all addresses.
 Finally start vrrpd, again using the same parameters on both
-hosts. Example, using debugging output to show what is going on:
+hosts. Example, using debugging output to show what is going on::
 
-pen -df 2323 192.168.1.240:23
-vrrpd -i eth0 -v 1 192.168.1.199
+    $ pen -df 2323 192.168.1.240:23
+    $ vrrpd -i eth0 -v 1 192.168.1.199
 
 Now try telnetting to 192.168.1.199 on port 2323. You should get
 connected through pen on one of the servers. Log out and stop
