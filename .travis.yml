@@ -12,6 +12,7 @@ install:
     - ./bootstrap
     - ./configure $CONFIGURE_OPTION
     - make
+    - sudo make install
 
 script:
     - ./pen
