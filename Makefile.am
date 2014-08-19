@@ -1,4 +1,3 @@
-
 bin_PROGRAMS = pen mergelogs penctl penlog penlogd
 
 pen_SOURCES = pen.c
