@@ -3523,7 +3523,7 @@ int main(int argc, char **argv)
 	listenfd = open_listener(listenport);
 	if (listenfd < 0)
 	{
-		return 1;
+		return EXIT_FAILURE;
 	}
 	init_mask();
 	init(argc, argv);
@@ -3591,5 +3591,5 @@ int main(int argc, char **argv)
 	if (pidfile) {
 		unlink(pidfile);
 	}
-	return 0;
+	return EXIT_SUCCESS;
 }

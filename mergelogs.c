@@ -410,5 +410,5 @@ That is: client, whatever, whatever, [timestamp], "URI", code, size.
 		read_server_line(s);
 	}
 	fclose(pfp);
-	return 0;
+	return EXIT_SUCCESS;
 }

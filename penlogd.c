@@ -386,5 +386,5 @@ int main(int argc, char **argv)
 
 	if (logfp) fclose(logfp);
 	if (pidfile) unlink(pidfile);
-	return 0;
+	return EXIT_SUCCESS;
 }

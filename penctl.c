@@ -25,7 +25,6 @@
 #include <netdb.h>
 #include <sys/types.h>
 #include <netinet/in.h>
-//#include <arpa/inet.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -185,5 +184,5 @@ int main(int argc, char **argv)
 	}
 	close(fd);
 
-	return 0;
+	return EXIT_SUCCESS;
 }
