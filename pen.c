@@ -1917,6 +1917,7 @@ static void write_cfg(char *p)
 {
 	int i, j;
 	struct in_addr ip;
+	char ip_str[INET6_ADDRSTRLEN];
 	time_t now;
 	struct tm *nowtm;
 	char nowstr[80];
@@ -1948,20 +1949,26 @@ static void write_cfg(char *p)
 	for (i = 0; i < ACLS_MAX; i++) {
 		fprintf(fp, "no acl %d\n", i);
 		for (j = 0; j < nacls[i]; j++) {
+			fprintf(fp, "acl %d %s ", i,
+				acls[i][j].permit?"permit":"deny");
 			switch (acls[i][j].class) {
 			case ACE_IPV4:
 				memcpy(&ip, &acls[i][j].ace.ipv4.ip, 4);
-				fprintf(fp, "acl %d %s %s ", i,
-					acls[i][j].permit?"permit":"deny",
-					inet_ntoa(ip));
+				fprintf(fp, "%s ", inet_ntoa(ip));
 				memcpy(&ip, &acls[i][j].ace.ipv4.mask, 4);
 				fprintf(fp, "%s\n", inet_ntoa(ip));
 				break;
 			case ACE_IPV6:
-				debug("ACE_IPV6: Not implemented");
+				fprintf(fp, "%s/%d\n",
+					inet_ntop(AF_INET6,
+						&acls[i][j].ace.ipv6.ip,
+						ip_str, sizeof ip_str),
+					acls[i][j].ace.ipv6.len);
 				break;
 			case ACE_GEO:
-				debug("ACE_GEO: Not implemented");
+				fprintf(fp, "country %c%c\n",
+					acls[i][j].ace.geo.country[0],
+					acls[i][j].ace.geo.country[1]);
 				break;
 			default:
 				debug("Unknown ACE class %d (this is probably a bug)",
